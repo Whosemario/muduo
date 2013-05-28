@@ -2,6 +2,9 @@
 // that can be found in the License file.
 //
 // Author: Shuo Chen (chenshuo at chenshuo dot com)
+/*
+* Mutex头文件中定义了 MutexLock、MutexLockGuard
+*/
 
 #ifndef MUDUO_BASE_MUTEX_H
 #define MUDUO_BASE_MUTEX_H
@@ -17,6 +20,7 @@ namespace muduo
 class MutexLock : boost::noncopyable
 {
  public:
+  /* 构造函数初始化mutex */
   MutexLock()
     : holder_(0)
   {
@@ -24,6 +28,7 @@ class MutexLock : boost::noncopyable
     assert(ret == 0); (void) ret;
   }
 
+  /* 析构函数中destroy mutex */
   ~MutexLock()
   {
     assert(holder_ == 0);
@@ -95,18 +100,19 @@ class MutexLock : boost::noncopyable
   pid_t holder_;
 };
 
+/* MutexLockGuard做的事情很简单，在构造函数中加锁，在析构函数中解锁 */
 class MutexLockGuard : boost::noncopyable
 {
  public:
   explicit MutexLockGuard(MutexLock& mutex)
     : mutex_(mutex)
   {
-    mutex_.lock();
+    mutex_.lock();    // mutex 加锁
   }
 
   ~MutexLockGuard()
   {
-    mutex_.unlock();
+    mutex_.unlock();   // mutex 解锁
   }
 
  private:
