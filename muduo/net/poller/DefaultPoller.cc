@@ -13,7 +13,9 @@
 #include <stdlib.h>
 
 using namespace muduo::net;
-
+/*
+* 根据 MUDUO_USE_POLL 参数来决定使用poll(2)还是epoll(2)
+*/
 Poller* Poller::newDefaultPoller(EventLoop* loop)
 {
   if (::getenv("MUDUO_USE_POLL"))
